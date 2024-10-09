@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 import ReactFlow, {
   MarkerType,
-  ReactFlowProvider,
   useReactFlow,
   useNodesState,
   useEdgesState,
@@ -13,7 +12,7 @@ import useAutoLayout from "./useAutoLayout";
 
 import "reactflow/dist/style.css";
 import nodeTypes from "./graph/nodeTypes";
-import edgeTypes from "./graph/nodeTypes";
+import edgeTypes from "./graph/edgeTypes";
 
 const proOptions = {
   account: "paid-pro",
@@ -37,10 +36,9 @@ const defaultEdgeOptions = {
 /**
  * This example shows how you can automatically arrange your nodes after adding child nodes to your graph.
  */
-function ReactFlowAutoLayout({ dataGraph }) {
-  console.log(dataGraph);
-
+function GraphAutoLayout(props) {
   const { fitView } = useReactFlow();
+  const dataGraph = props.graphData;
 
   const [nodes, , onNodesChange] = useNodesState(dataGraph.nodes);
   const [edges, , onEdgesChange] = useEdgesState(dataGraph.edges);
@@ -71,13 +69,4 @@ function ReactFlowAutoLayout({ dataGraph }) {
   );
 }
 
-const ReactFlowWrapper = ({ dataGraph }) => {
-
-  return (
-    <ReactFlowProvider>
-      <ReactFlowAutoLayout dataGraph={dataGraph} />
-    </ReactFlowProvider>
-  );
-};
-
-export default ReactFlowWrapper;
+export default GraphAutoLayout;

@@ -51,10 +51,19 @@ export function FloatingEdge({
       {label && (
         <EdgeLabelRenderer>
           <div
-            className="nodrag nopan absolute z-50 rounded-lg border border-neutral-400/20 bg-secondary-500 px-2 py-1 text-xs font-bold text-primary-800"
             style={{
-              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              position: "absolute",
+              zIndex: 50,
+              borderRadius: "0.5rem",
+              border: "1px solid rgba(163, 163, 163, 0.2)",
+              backgroundColor: "#e1c29a",
+              padding: "0.25rem 0.5rem",
+              fontSize: "0.75rem",
+              fontWeight: "bold",
+              color: "#615842",
+              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
             }}
+            className="nodrag nopan"
           >
             {label}
           </div>

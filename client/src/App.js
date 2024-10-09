@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 import "reactflow/dist/style.css";
-import ReactFlowWrapper from "./components/ReactFlowAutoLayout/ReactFlowAutoLayout";
-import { MarkerType } from "reactflow";
+import { MarkerType, ReactFlowProvider } from "reactflow";
+import GraphAutoLayout from "./components/GraphAutoLayout/GraphAutoLayout";
 
 // Custom plugin to render a graph for 'application/vnd.graph+json' responses
 const graphPlugin = (system) => ({
@@ -81,9 +81,16 @@ const graphPlugin = (system) => ({
         }
 
         return (
-          <div style={{ height: "500px", width: "100%" }}>
-            <h3>Graph View:</h3>
-            <ReactFlowWrapper dataGraph={graphData} />
+          <div style={{ height: graphData?.nodes.length === 0 ? "fit-content" : "640px", width: "100%", border: "1px solid #000000", borderRadius: "4px", padding: "16px", display: "flex", flexDirection: "column", gap: "20px" }}>
+            <h3 style={{ margin: 0 }}>Graph View:</h3>
+            {(!graphData || graphData?.nodes.length === 0) && <p style={{ margin: 0 }}>No Graph Data for this id</p>}
+            <div style={{ height: "100%", width: "100%" }}>
+              {graphData && graphData.nodes.length > 0 && (
+                <ReactFlowProvider>
+                  <GraphAutoLayout graphData={graphData} />
+                </ReactFlowProvider>
+              )}
+            </div>
           </div>
         );
       }

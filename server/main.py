@@ -69,6 +69,17 @@ async def get_items(id: str = Query(...), response_type: ResponseType = Query(Re
             }
             ]
         }
+    elif id=="25":
+        items = {
+            'message_variation_id': 'fd042b33-cb92-4e6b-990c-ceb1a79c44f6',
+            'reply': [
+                {
+                    'type': 'text',
+                    'result': 'You have 0 transactions, total incoming: 0 BTC, total outgoing: 0 BTC.',
+                    'error': None
+                }
+            ]
+        }
     elif id=="27":
         items = {
             'message_variation_id': 'fd042b33-cb92-4e6b-990c-ceb1a79c44f6',

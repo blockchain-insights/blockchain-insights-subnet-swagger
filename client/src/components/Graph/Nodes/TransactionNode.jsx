@@ -19,14 +19,46 @@ export function TransactionNode({ id, data }) {
         href={`https://blockchain.com/explorer/transactions/btc/${id}`}
         target="_blank"
         rel="noreferrer"
+        style={{ textDecoration: "none" }}
       >
-        <div className="flex flex-col gap-1">
-          <div className="z-50 flex w-80 flex-col gap-1 text-wrap break-all rounded-lg border bg-white p-3 text-base font-semibold leading-none text-text-dark dark:border-[#171718] dark:bg-[#171718] dark:text-white">
-            <p>{data.title}</p>
-            <p className="text-sm font-normal text-text-dark/60 dark:text-white/60">
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+          <div
+            style={{
+              zIndex: 50,
+              display: "flex",
+              width: "20rem",
+              flexDirection: "column",
+              gap: "0.75rem",
+              wordBreak: "break-all",
+              borderRadius: "0.5rem",
+              border: "1px solid",
+              backgroundColor: "white",
+              padding: "0.75rem",
+              fontSize: "1rem",
+              fontWeight: 600,
+              lineHeight: "1",
+              color: "#000000", // Dark mode styling would need to be handled separately
+            }}
+          >
+            <p style={{ margin: 0 }}>{data.title}</p>
+            <p
+              style={{
+                fontSize: "0.875rem",
+                fontWeight: 400,
+                margin: 0,
+                color: "rgba(0, 0, 0, 0.6)", // Dark mode styling would need to be handled separately
+              }}
+            >
               {id}
             </p>
-            <p className="text-sm font-normal text-text-dark/60 dark:text-white/60">
+            <p
+              style={{
+                fontSize: "0.875rem",
+                fontWeight: 400,
+                margin: 0,
+                color: "rgba(0, 0, 0, 0.6)", // Dark mode styling would need to be handled separately
+              }}
+            >
               Block Number: {data.blockHeight}
             </p>
           </div>

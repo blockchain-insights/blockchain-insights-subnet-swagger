@@ -46,7 +46,7 @@ function useAutoLayout() {
       const { nodes: nextNodes, edges: nextEdges } = await layoutAlgorithm(
         nodes,
         edges,
-        { direction: "LR", spacing: [150, 300] },
+        { direction: "LR", spacing: [100, 200] },
       );
 
       // Mutating the nodes and edges directly here is fine because we expect our

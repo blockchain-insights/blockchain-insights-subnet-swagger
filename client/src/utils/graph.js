@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import dagre from "@dagrejs/dagre";
 import {
   forceSimulation,
@@ -9,7 +7,7 @@ import {
   forceY,
 } from "d3-force";
 import { Position } from "reactflow";
-import collide from "../utils/collide";
+import collide from "./collide";
 import { produce } from "immer";
 
 const simulation = forceSimulation()
