@@ -96,14 +96,32 @@ const graphPlugin = (system) => ({
 
 function App() {
   const [swaggerData, setSwaggerData] = useState(null);
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get("id");
+  const responseType = urlParams.get("response_type");
 
   useEffect(() => {
     // Fetch the OpenAPI schema from FastAPI backend
     fetch("http://localhost:8000/openapi.json")
       .then((response) => response.json())
-      .then((data) => setSwaggerData(data))
+      .then((data) => {
+        // Modify the spec with dynamic query parameters
+        Object.keys(data.paths).forEach((path) => {
+          data.paths[path].get.parameters.forEach((param) => {
+            if (param.name === "id" && id) {
+              param.schema.default = id; // Dynamically set the 'id'
+            }
+            if (param.name === "response_type" && responseType) {
+              param.schema.default = responseType; // Dynamically set the 'response_type'
+            }
+          });
+        });
+
+        // Set the modified schema to state
+        setSwaggerData(data);
+      })
       .catch((error) => console.error("Error fetching OpenAPI schema:", error));
-  }, []);
+  }, [id, responseType]);
 
   return (
     <div className="App">
@@ -112,7 +130,23 @@ function App() {
         {swaggerData ? (
           <SwaggerUI
             spec={swaggerData}
-            plugins={[graphPlugin]} // Inject the custom graph plugin
+            plugins={[graphPlugin]}
+            docExpansion="full"
+            tryItOutEnabled={true}
+            requestInterceptor={(req) => {
+              console.log("Request intercepted", req);
+              return req;
+            }}
+            onComplete={() => {
+              setTimeout(() => {
+                const executeButton = document.getElementsByClassName(
+                  "btn execute opblock-control__btn"
+                );
+                if (executeButton) {
+                  executeButton[0].click();
+                }
+              }, 1000);
+            }}
           />
         ) : (
           <p>Loading API documentation...</p>

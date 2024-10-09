@@ -39,8 +39,9 @@ app.add_middleware(
         "description": "Returns a list of items in different formats",
     }
 })
-async def get_items(response_type: ResponseType = Query(ResponseType.json)):
-    items = {
+async def get_items(id: str = Query(...), response_type: ResponseType = Query(ResponseType.json)):
+    if id == "23":
+        items = {
         'message_variation_id': 'fd042b33-cb92-4e6b-990c-ceb1a79c44f6',
         'reply': [
             {
@@ -66,8 +67,43 @@ async def get_items(response_type: ResponseType = Query(ResponseType.json)):
                 'result': 'You have 3 transactions, total incoming: 5.64112312 BTC, total outgoing: 5.64046488 BTC.',
                 'error': None
             }
-        ]
-    }
+            ]
+        }
+    elif id=="27":
+        items = {
+            'message_variation_id': 'fd042b33-cb92-4e6b-990c-ceb1a79c44f6',
+            'reply': [
+                {
+                    'type': 'graph',
+                    'result': [],
+                    'error': None
+                },
+                {
+                    'type': 'text',
+                    'result': 'You have 0 transactions, total incoming: 0 BTC, total outgoing: 0 BTC.',
+                    'error': None
+                }
+            ]
+        }
+    else:
+        items = {
+            'message_variation_id': 'fd042b33-cb92-4e6b-990c-ceb1a79c44f6',
+            'reply': [
+                {
+                    'type': 'graph',
+                    'result': [],
+                    'error': None
+                },
+                {
+                    'type': 'text',
+                    'result': 'You have 0 transactions, total incoming: 0 BTC, total outgoing: 0 BTC.',
+                    'error': None
+                }
+            ]
+        }
+        
+    
+    
     
     if response_type == ResponseType.text:
         return PlainTextResponse(str(items))
