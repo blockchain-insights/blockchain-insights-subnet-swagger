@@ -1,4 +1,4 @@
-import { FloatingEdge } from "../../../components/Graph/Edges/FloatingEdge";
+import { FloatingEdge } from "../../Graph/Edges/FloatingEdge";
 import { SmoothStepEdge } from "../../Graph/Edges/SmoothStepEdge";
 
 const edgeTypes = {

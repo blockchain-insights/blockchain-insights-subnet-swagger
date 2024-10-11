@@ -10,7 +10,6 @@ import ReactFlow, {
 
 import useAutoLayout from "./useAutoLayout";
 
-import "reactflow/dist/style.css";
 import nodeTypes from "./graph/nodeTypes";
 import edgeTypes from "./graph/edgeTypes";
 
