@@ -52,7 +52,7 @@ function App() {
 
   useEffect(() => {
     // Fetch the OpenAPI schema from FastAPI backend
-    fetch("http://185.239.209.254:9900/openapi.json")
+    fetch("https://validator-api-prod.azurewebsites.net/openapi.json")
       .then((response) => response.json())
       .then((data) => {
         // data servers use as BASE URL
