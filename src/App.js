@@ -49,16 +49,17 @@ function App() {
   const endpointDetails = pathname.split("/")[2];
 
   const [completed, setCompleted] = useState(false)
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     // Fetch the OpenAPI schema from FastAPI backend
-    fetch("https://validator-api-prod.azurewebsites.net/openapi.json")
+    fetch(`${BASE_URL}/openapi.json`)
       .then((response) => response.json())
       .then((data) => {
         // data servers use as BASE URL
         data.servers = [
           {
-            "url": "https://validator-api-prod.azurewebsites.net"
+            "url": BASE_URL
           }
         ];
 
@@ -94,6 +95,11 @@ function App() {
 
       const divChild = endpointAccor.getElementsByClassName("opblock-control-arrow")
       divChild[0].click();
+
+      // prevent execute button clicked when no params
+      if (urlParams.size === 0) {
+        return;
+      }
 
       // put some delay, to wait execute button rendered
       setTimeout(() => {
