@@ -4,60 +4,60 @@ import GraphAutoLayout from '../GraphAutoLayout/GraphAutoLayout';
 
 const GraphResponse = React.memo(({ response }) => {
     const graphData = useMemo(() => {
-        if (!response?.reply) {
+        // if no results means no return data
+        if (!response?.results) {
             return undefined;
         }
 
-        for (let i = 0; i < response.reply.length; i++) {
-            const el = response.reply[i];
-
-            if (el.type === "graph") {
-                if (el.result.length === 0) {
-                    return undefined;
-                }
-
-                const allNodes = el.result
-                    .filter((val) => val.type === "node")
-                    .map((val) => ({
-                        ...val,
-                        id: val.id,
-                        type: val.label,
-                        position: {
-                            x: 100,
-                            y: 100,
-                        },
-                        data: {
-                            title: val.label,
-                            timestamp: 1714482843274,
-                            blockHeight: val.block_height,
-                        },
-                    }));
-
-                return {
-                    nodes: allNodes,
-                    edges: el.result
-                        .filter((val) => val.type === "edge")
-                        .map((val) => ({
-                            ...val,
-                            type: "smoothstep",
-                            id: val.id,
-                            markerEnd: {
-                                type: MarkerType.ArrowClosed,
-                                width: 20,
-                                height: 20,
-                                color: "#FFC29A",
-                            },
-                            style: {
-                                stroke: "#FFC29A",
-                            },
-                            label: val.label,
-                            source: val.from_id,
-                            target: val.to_id,
-                        })),
-                };
-            }
+        // if not an array, means data structure not fit
+        if (!Array.isArray(response.results)) {
+            return undefined;
         }
-        return undefined;
+
+        // if the length is 0 means no data
+        if (response.results.length === 0) {
+            return undefined;
+        }
+
+        const allNodes = response.results
+            .filter((val) => val.type === "node")
+            .map((val) => ({
+                ...val,
+                id: val.id,
+                type: val.label,
+                position: {
+                    x: 100,
+                    y: 100,
+                },
+                data: {
+                    title: val.label,
+                    timestamp: 1714482843274,
+                    blockHeight: val.block_height,
+                },
+            }));
+
+        return {
+            nodes: allNodes,
+            edges: response.results
+                .filter((val) => val.type === "edge")
+                .map((val) => ({
+                    ...val,
+                    type: "smoothstep",
+                    id: val.id,
+                    markerEnd: {
+                        type: MarkerType.ArrowClosed,
+                        width: 20,
+                        height: 20,
+                        color: "#FFC29A",
+                    },
+                    style: {
+                        stroke: "#FFC29A",
+                    },
+                    label: val.label,
+                    source: val.from_id,
+                    target: val.to_id,
+                })),
+        };
     }, [response]);
 
     return (
