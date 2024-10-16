@@ -58,7 +58,7 @@ function App() {
         // data servers use as BASE URL
         data.servers = [
           {
-            "url": "http://185.239.209.254:9900"
+            "url": "https://validator-api-prod.azurewebsites.net"
           }
         ];
 
