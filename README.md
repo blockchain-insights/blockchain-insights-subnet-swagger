@@ -2,9 +2,8 @@
 
 1. [Project Structure](#project-structure)
 2. [Requirements](#requirements)
-3. [Setting up the React Frontend (client)](#setting-up-the-react-frontend-client)
+3. [Setting up the Project](#setting-up-the-project)
 4. [Running the Projects](#running-the-projects)
-5. [Notes](#notes)
 
 ---
 
@@ -12,12 +11,10 @@
 
 ```plaintext
 blockchain-insights-subnet-swagger/
-│
-└── client/        # React frontend with Swagger UI and custom graph plugin
-    ├── public/              # Public assets
-    ├── src/                 # React components
-    ├── package.json         # JavaScript dependencies
-    └── ...
+   ├── public/              # Public assets
+   ├── src/                 # React components
+   ├── package.json         # JavaScript dependencies
+   └── ...
 ```
 
 ## Requirements
@@ -29,19 +26,23 @@ Before starting, ensure you have the following installed:
 
 ---
 
-## Setting up the React Frontend (client)
+## Setting up the Project
 
-1. **Navigate to the `client` directory**:
-
-   ```bash
-   cd ../client
-   ```
-
-2. **Install the required dependencies**:
+1. **Install the required dependencies**:
 
    ```bash
    npm install
    ```
+
+2. **Set up the environment variable**:
+
+   Create a `.env` file in the root directory and add the following:
+
+   ```
+   REACT_APP_API_BASE_URL=https://your-base-url
+   ```
+
+   This sets the base URL for the API requests.
 
 3. **Start the React development server**:
 
@@ -51,20 +52,17 @@ Before starting, ensure you have the following installed:
 
    The React app will start at `http://localhost:3000`.
 
-   The React frontend fetches the OpenAPI schema from FastAPI and displays it using Swagger UI. You can view API documentation and custom graph visualizations.
+   The React frontend fetches the OpenAPI schema from FastAPI using the base URL defined in the environment variable and displays it using Swagger UI. You can view API documentation and custom graph visualizations.
 
 ---
 
 ## Running the Projects
 
-To run both the React frontend together, follow these steps:
-
 1. **Start the React Frontend**:
 
-   - Open another terminal, navigate to the `client` directory, and run:
+   - Open terminal and run:
 
    ```bash
-   cd client
    npm start
    ```
 
@@ -76,12 +74,3 @@ To run both the React frontend together, follow these steps:
    - The React app will display the Swagger UI, including the custom graph visualizations based on the API responses from FastAPI.
 
 ---
-
-## Notes
-
-- Ensure that the FastAPI backend (`http://localhost:8000`) is running before trying to access the React frontend.
-- The custom graph view is available for certain response types (such as `graph`), which can be visualized using React Flow in the Swagger UI.
-
----
-
-Feel free to reach out with any issues or questions. Happy coding!
