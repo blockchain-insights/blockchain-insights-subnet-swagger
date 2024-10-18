@@ -25,10 +25,7 @@ const graphPlugin = (system) => ({
           return <p>Error rendering graph data</p>;
         }
 
-
-        return (
-          <GraphResponse response={res} />
-        );
+        return <GraphResponse response={res} />;
       }
 
       // For all other content types, render the default response body
@@ -39,6 +36,7 @@ const graphPlugin = (system) => ({
 
 function App() {
   const [swaggerData, setSwaggerData] = useState(null);
+  const [error, setError] = useState(null);
   const urlParams = new URLSearchParams(window.location.search);
 
   const url = window.location.href;
@@ -48,10 +46,17 @@ function App() {
   const operations = pathname.split("/")[1];
   const endpointDetails = pathname.split("/")[2];
 
-  const [completed, setCompleted] = useState(false)
+  const [completed, setCompleted] = useState(false);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
+    if (!BASE_URL) {
+      setError(
+        "Unable to connect to the API. Please check your network connection or contact support if the issue persists."
+      );
+      return;
+    }
+
     // Fetch the OpenAPI schema from FastAPI backend
     fetch(`${BASE_URL}/openapi.json`)
       .then((response) => response.json())
@@ -59,24 +64,27 @@ function App() {
         // data servers use as BASE URL
         data.servers = [
           {
-            "url": BASE_URL
-          }
+            url: BASE_URL,
+          },
         ];
 
         Object.keys(data.paths).forEach((path) => {
           if (data.paths[path].get.operationId === endpointDetails) {
             data.paths[path].get.parameters.forEach((param) => {
               if (urlParams.has(param.name)) {
-                param.schema.default = urlParams.get(param.name)
+                param.schema.default = urlParams.get(param.name);
               }
-            })
+            });
           }
         });
 
         // Set the modified schema to state
         setSwaggerData(data);
       })
-      .catch((error) => console.error("Error fetching OpenAPI schema:", error));
+      .catch((error) => {
+        console.error("Error fetching OpenAPI schema:", error);
+        setError("Failed to fetch API documentation. Please try again later.");
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,14 +94,18 @@ function App() {
         return;
       }
 
-      const endpointAccor = document.getElementById(`operations-${operations}-${endpointDetails}`)
+      const endpointAccor = document.getElementById(
+        `operations-${operations}-${endpointDetails}`
+      );
 
       // Make sure the endpointAccor is found before proceeding
       if (!endpointAccor) {
         return;
       }
 
-      const divChild = endpointAccor.getElementsByClassName("opblock-control-arrow")
+      const divChild = endpointAccor.getElementsByClassName(
+        "opblock-control-arrow"
+      );
       divChild[0].click();
 
       // prevent execute button clicked when no params
@@ -110,17 +122,18 @@ function App() {
         if (executeButton.length > 0) {
           executeButton[0].click();
         }
-      }, 1000)
-
+      }, 1000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [completed])
+  }, [completed]);
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>API Documentation with Custom Graph View</h1>
-        {swaggerData ? (
+        {error ? (
+          <p style={{ color: "red" }}>{error}</p>
+        ) : swaggerData ? (
           <SwaggerUI
             spec={swaggerData}
             plugins={[graphPlugin]}
