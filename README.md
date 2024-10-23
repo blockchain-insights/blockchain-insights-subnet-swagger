@@ -40,7 +40,7 @@ Before starting, ensure you have the following installed:
    Create a `.env` file in the root directory and add the following:
 
    ```
-   REACT_APP_API_BASE_URL=https://your-base-url
+   REACT_APP_BASE_URL=https://your-base-url
    ```
 
    This sets the base URL for the API requests.
