@@ -7,4 +7,4 @@ services:
     ports:
       - "80:3000"  # Adjust the ports as per your application's needs
     environment:
-      - REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
+      - REACT_APP_BASE_URL=${REACT_APP_BASE_URL}
