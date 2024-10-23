@@ -32,6 +32,7 @@ Before starting, ensure you have the following installed:
 
    ```bash
    npm install
+   npm run build
    ```
 
 2. **Set up the environment variable**:
