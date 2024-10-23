@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/blockchain-insights/blockchain-insights-subnet-swagger:latest
     container_name: validator-api-swagger
     ports:
       - "80:3000"  # Adjust the ports as per your application's needs
