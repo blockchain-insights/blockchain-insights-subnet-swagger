@@ -1,14 +1,72 @@
+/* Define the Trap font family */
+@font-face {
+  font-family: "Trap";
+  src: url("../public/fonts/Trap/Trap-Medium.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Trap";
+  src: url("../public/fonts/Trap/Trap-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Trap";
+  src: url("../public/fonts/Trap/Trap-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+#root {
+  background-image: url("../public/decor.svg");
+  background-size: cover;
+  background-position: center -100px;
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 0.1);
+  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  font-family: "Trap"!important;
+}
+
 .App {
-  text-align: center;
+  margin: 0;
+  padding: 2rem 7.5rem;
+  font-family: "Trap";
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+}
+
+.colorful-text {
+  @apply bg-gradient-to-b from-brand-gold-light to-brand-gold-dark bg-clip-text text-transparent;
+}
+
+.colorful-text2 {
+  @apply relative !bg-clip-text text-transparent;
+  background-image: url("../public/my-gradient.png");
+  background-size: 150%;
+  background-position-y: center;
+  animation: animateIn 1.5s forwards infinite alternate-reverse;
+}
+
+/* Swagger UI Styling */
+.swagger-ui .info {
+  display: none;
+}
+
+.swagger-ui .scheme-container {
+  background-color: transparent;
+}
+
+.swagger-ui .servers select {
+  background-color: transparent;
 }

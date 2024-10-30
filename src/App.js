@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import SwaggerUI from "swagger-ui-react";
+import GraphResponse from "./components/GraphResponse/GraphResponse";
+import Title from "./components/Sections/Title";
 
 import "reactflow/dist/style.css";
 import "swagger-ui-react/swagger-ui.css";
-
-import GraphResponse from "./components/GraphResponse/GraphResponse";
+import "./App.css";
 
 // Custom plugin to render a graph for 'application/vnd.graph+json' responses
 const graphPlugin = (system) => ({
@@ -130,26 +131,30 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>API Documentation with Custom Graph View</h1>
-        {error ? (
-          <p style={{ color: "red" }}>{error}</p>
-        ) : swaggerData ? (
-          <SwaggerUI
-            spec={swaggerData}
-            plugins={[graphPlugin]}
-            docExpansion="list"
-            tryItOutEnabled={true}
-            requestInterceptor={(req) => {
-              return req;
-            }}
-            onComplete={() => {
-              setCompleted(true);
-            }}
-          />
-        ) : (
-          <p>Loading API documentation...</p>
-        )}
+        <Title />
       </header>
+      <main>
+        <div className="font-trap">
+          {error ? (
+            <p style={{ color: "red" }}>{error}</p>
+          ) : swaggerData ? (
+            <SwaggerUI
+              spec={swaggerData}
+              plugins={[graphPlugin]}
+              docExpansion="list"
+              tryItOutEnabled={true}
+              requestInterceptor={(req) => {
+                return req;
+              }}
+              onComplete={() => {
+                setCompleted(true);
+              }}
+            />
+          ) : (
+            <p>Loading API documentation...</p>
+          )}
+        </div>
+      </main>
     </div>
   );
 }
