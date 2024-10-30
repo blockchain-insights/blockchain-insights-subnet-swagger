@@ -16,6 +16,7 @@
     "reactflow": "^11.11.4",
     "swagger-ui": "^5.17.14",
     "swagger-ui-react": "^5.17.14",
+    "tailwind-merge": "^2.5.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -41,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.14"
   }
 }
