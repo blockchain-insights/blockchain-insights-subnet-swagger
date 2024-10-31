@@ -148,6 +148,14 @@ function App() {
               }}
               onComplete={() => {
                 setCompleted(true);
+                // Locate and change the "Servers" label text
+                const serverLabel = document.querySelector(
+                  ".swagger-ui .servers-title"
+                );
+                if (serverLabel) {
+                  serverLabel.textContent =
+                    "API Documentation with Custom Graph View";
+                }
               }}
             />
           ) : (

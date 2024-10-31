@@ -63,10 +63,85 @@
   display: none;
 }
 
+.swagger-ui .servers-title {
+  font-size: 26px;
+  line-height: 26px;
+  font-family: "Trap";
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.swagger-ui .scheme-container select#servers {
+  padding: 16px;
+  border-radius: 10px;
+}
+
 .swagger-ui .scheme-container {
   background-color: transparent;
 }
 
 .swagger-ui .servers select {
   background-color: transparent;
+}
+
+.swagger-ui .wrapper {
+  max-width: initial;
+}
+
+.swagger-ui .scheme-container {
+  position: relative;
+  box-shadow: none;
+}
+
+.swagger-ui .auth-btn-wrapper {
+  justify-content: space-between;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  flex-direction: row-reverse;
+}
+
+.swagger-ui .dialog-ux .modal-ux {
+  border-radius: 20px;
+}
+
+.swagger-ui .opblock-tag-section {
+  border-radius: 10px;
+  border: 1px solid #F2DDA6;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+  background: linear-gradient(45deg,#F2DDA6,#36322A) border-box;
+}
+
+.swagger-ui .model-box-control:focus, .swagger-ui .models-control:focus, .swagger-ui .opblock-summary-control:focus {
+  outline: none;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary {
+  border-color: #F2DDA6;
+}
+
+.swagger-ui .operation-tag-content {
+  background: #000000 0.3;
+}
+
+.swagger-ui .opblock.opblock-get {
+  background: initial;
+}
+
+.swagger-ui .btn.execute {
+  background: linear-gradient(45deg,#F2DDA6,#36322A);
+  border: 2px solid transparent;
+  border-left: transparent;
+  border-right: transparent;
+  transition: all 0.5s ease;
+}
+
+.swagger-ui .btn.execute:hover {
+  background: transparent;
+  color: #dab860;
+  transition: all 0.5s ease;
+  border: 2px solid #dab860;
 }
