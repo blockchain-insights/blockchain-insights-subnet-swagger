@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2024-11-04
+
+### Added
+- Adjust the Graph Response Schema
+
 ## [1.0.1] - 2024-11-02
 
 ### Added
