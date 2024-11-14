@@ -5,21 +5,21 @@ import GraphAutoLayout from "../GraphAutoLayout/GraphAutoLayout";
 const GraphResponse = React.memo(({ response }) => {
   const graphData = useMemo(() => {
     // if no results means no return data
-    if (!response?.response) {
+    if (!response?.response?.result) {
       return undefined;
     }
 
     // if not an array, means data structure not fit
-    if (!Array.isArray(response.response)) {
+    if (!Array.isArray(response.response?.result)) {
       return undefined;
     }
 
     // if the length is 0 means no data
-    if (response.response.length === 0) {
+    if (response.response.result.length === 0) {
       return undefined;
     }
 
-    const allNodes = response.response
+    const allNodes = response.response.result
       .filter((val) => val.type === "node")
       .map((val) => ({
         ...val,
@@ -38,7 +38,7 @@ const GraphResponse = React.memo(({ response }) => {
 
     return {
       nodes: allNodes,
-      edges: response.response
+      edges: response.response.result
         .filter((val) => val.type === "edge")
         .map((val) => ({
           ...val,
@@ -73,7 +73,7 @@ const GraphResponse = React.memo(({ response }) => {
       }}
     >
       <h3 style={{ margin: 0 }}>Graph View:</h3>
-      {!graphData && <p style={{ margin: 0 }}>No Graph Data for this id</p>}
+      {!graphData && <p style={{ margin: 0 }}>No data</p>}
       {graphData && (
         <ReactFlowProvider>
           <GraphAutoLayout graphData={graphData} />
