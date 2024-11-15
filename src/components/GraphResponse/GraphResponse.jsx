@@ -53,7 +53,20 @@ const GraphResponse = React.memo(({ response }) => {
           style: {
             stroke: "#FFC29A",
           },
-          label: val.label,
+          label: (
+            <div className="flex flex-col">
+              <div className="flex gap-1 w-full text-center justify-center mb-1 capitalize">{val.transaction_type}</div>
+              <div className="flex gap-1 justify-center">
+                <strong>tx_id:</strong>
+                {val.id}
+              </div>
+
+              <div className="flex gap-1 justify-center">
+                <strong>amount:</strong>
+                {val.label}
+              </div>
+            </div>
+          ),
           source: val.from_id,
           target: val.to_id,
         })),
