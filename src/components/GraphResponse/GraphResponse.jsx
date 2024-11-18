@@ -5,69 +5,71 @@ import GraphAutoLayout from "../GraphAutoLayout/GraphAutoLayout";
 const GraphResponse = React.memo(({ response }) => {
   const graphData = useMemo(() => {
     const data = response?.response?.result?.data;
+    const network = response?.network;
 
     // Early returns for invalid data
     if (!data || !Array.isArray(data) || data.length === 0) {
       return undefined;
     }
 
-    const allNodes = Object.values(
-      data
-        .filter((val) => val.type === "node")
-        .reduce(
-          (acc, val) => ({
-            ...acc,
-            [val.id]: {
-              ...val,
-              id: val.id,
-              type: val.label,
-              position: {
-                x: 100,
-                y: 100,
+    if (network === "bitcoin") {
+      const allNodes = Object.values(
+        data
+          .filter((val) => val.type === "node")
+          .reduce(
+            (acc, val) => ({
+              ...acc,
+              [val.id]: {
+                ...val,
+                id: val.id,
+                type: val.label,
+                position: {
+                  x: 100,
+                  y: 100,
+                },
+                data: {
+                  title: val.label,
+                  timestamp: val.timestamp,
+                  blockHeight: val.block_height,
+                },
               },
-              data: {
-                title: val.label,
-                timestamp: val.timestamp,
-                blockHeight: val.block_height,
-              },
-            },
-          }),
-          {}
-        )
-    );
+            }),
+            {}
+          )
+      );
 
-    const allEdges = Object.values(
-      data
-        .filter((val) => val.type === "edge")
-        .reduce(
-          (acc, val) => ({
-            ...acc,
-            [val.id]: {
-              ...val,
-              type: "smoothstep",
-              id: val.id,
-              markerEnd: {
-                type: MarkerType.ArrowClosed,
-                width: 20,
-                height: 20,
-                color: "#FFC29A",
+      const allEdges = Object.values(
+        data
+          .filter((val) => val.type === "edge")
+          .reduce(
+            (acc, val) => ({
+              ...acc,
+              [val.id]: {
+                ...val,
+                type: "smoothstep",
+                id: val.id,
+                markerEnd: {
+                  type: MarkerType.ArrowClosed,
+                  width: 20,
+                  height: 20,
+                  color: "#FFC29A",
+                },
+                style: {
+                  stroke: "#FFC29A",
+                },
+                label: val.label,
+                source: val.from_id,
+                target: val.to_id,
               },
-              style: {
-                stroke: "#FFC29A",
-              },
-              label: val.label,
-              source: val.from_id,
-              target: val.to_id,
-            },
-          }),
-          {}
-        )
-    );
-
-    return {
-      nodes: allNodes,
-      edges: allEdges,
-    };
+            }),
+            {}
+          )
+      );
+      return {
+        nodes: allNodes,
+        edges: allEdges,
+      };
+    }
   }, [response]);
 
   return (
