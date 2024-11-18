@@ -2,74 +2,96 @@ import React, { useMemo } from "react";
 import { MarkerType, ReactFlowProvider } from "reactflow";
 import GraphAutoLayout from "../GraphAutoLayout/GraphAutoLayout";
 
+// Utility functions
+const createBaseNode = (val) => ({
+  ...val,
+  id: val.id,
+  type: val.label,
+  position: { x: 100, y: 100 },
+  data: {
+    title: val.label,
+    timestamp: val.timestamp,
+    blockHeight: val.block_height,
+  },
+});
+
+const createBaseEdge = (val) => ({
+  ...val,
+  type: "smoothstep",
+  id: val.id,
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    width: 20,
+    height: 20,
+    color: "#FFC29A",
+  },
+  style: { stroke: "#FFC29A" },
+  source: val.from_id,
+  target: val.to_id,
+});
+
+// Network-specific edge label creators
+const createBitcoinEdgeLabel = (val) => val.label;
+
+const createCommuneEdgeLabel = (val) => (
+  <div className="flex flex-col">
+    <div className="flex gap-1 w-full text-center justify-center mb-1 capitalize">
+      {val.transaction_type}
+    </div>
+    <div className="flex gap-1 justify-center">
+      <strong>tx_id:</strong>
+      {val.id}
+    </div>
+    <div className="flex gap-1 justify-center">
+      <strong>amount:</strong>
+      {val.label}
+    </div>
+  </div>
+);
+
+const processGraphData = (data, network) => {
+  const allNodes = Object.values(
+    data
+      .filter((val) => val.type === "node")
+      .reduce(
+        (acc, val) => ({
+          ...acc,
+          [val.id]: createBaseNode(val),
+        }),
+        {}
+      )
+  );
+
+  const allEdges = Object.values(
+    data
+      .filter((val) => val.type === "edge")
+      .reduce(
+        (acc, val) => ({
+          ...acc,
+          [val.id]: {
+            ...createBaseEdge(val),
+            label:
+              network === "bitcoin"
+                ? createBitcoinEdgeLabel(val)
+                : createCommuneEdgeLabel(val),
+          },
+        }),
+        {}
+      )
+  );
+
+  return { nodes: allNodes, edges: allEdges };
+};
+
 const GraphResponse = React.memo(({ response }) => {
   const graphData = useMemo(() => {
     const data = response?.response?.result?.data;
     const network = response?.network;
 
-    // Early returns for invalid data
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      return undefined;
-    }
+    if (!data?.length || !Array.isArray(data)) return undefined;
+    if (!["bitcoin", "commune"].includes(network)) return undefined;
 
-    if (network === "bitcoin") {
-      const allNodes = Object.values(
-        data
-          .filter((val) => val.type === "node")
-          .reduce(
-            (acc, val) => ({
-              ...acc,
-              [val.id]: {
-                ...val,
-                id: val.id,
-                type: val.label,
-                position: {
-                  x: 100,
-                  y: 100,
-                },
-                data: {
-                  title: val.label,
-                  timestamp: val.timestamp,
-                  blockHeight: val.block_height,
-                },
-              },
-            }),
-            {}
-          )
-      );
-
-      const allEdges = Object.values(
-        data
-          .filter((val) => val.type === "edge")
-          .reduce(
-            (acc, val) => ({
-              ...acc,
-              [val.id]: {
-                ...val,
-                type: "smoothstep",
-                id: val.id,
-                markerEnd: {
-                  type: MarkerType.ArrowClosed,
-                  width: 20,
-                  height: 20,
-                  color: "#FFC29A",
-                },
-                style: {
-                  stroke: "#FFC29A",
-                },
-                label: val.label,
-                source: val.from_id,
-                target: val.to_id,
-              },
-            }),
-            {}
-          )
-      );
-      return {
-        nodes: allNodes,
-        edges: allEdges,
-      };
-    }
+    return processGraphData(data, network);
   }, [response]);
 
   return (
