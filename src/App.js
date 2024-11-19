@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SwaggerUI from "swagger-ui-react";
 import GraphResponse from "./components/GraphResponse/GraphResponse";
 import Title from "./components/Sections/Title";
-
+import TimeSeries from "./components/Graph/TimeSeries/TimeSeries"
 import "reactflow/dist/style.css";
 import "swagger-ui-react/swagger-ui.css";
 import "./App.css";
@@ -34,6 +34,114 @@ const graphPlugin = (system) => ({
     },
   },
 });
+
+
+const balanceTrackingDeltasPlugin = () => ({
+  wrapComponents: {
+    responseBody: (Original) => (props) => {
+      const { content: body, url } = props;
+
+      const match = url.match(/\/v1\/balance-tracking\/([^/]+)\/deltas/);
+
+
+      if (match) {
+        let res;
+
+        try {
+          res = typeof body === "string" ? JSON.parse(body) : body;
+
+          if (!res || !res.response || !res.response.result || !res.response.result.data) {
+            throw new Error("Invalid or empty response data.");
+          }
+        } catch (error) {
+          console.error("Error processing balance tracking deltas data:", error.message);
+          return <p style={{ color: "red" }}>Error rendering deltas data: {error.message}</p>;
+        }
+
+        return (
+          <div>
+            <TimeSeries data={res} dataKey="balance_delta" />
+          </div>
+        );
+      }
+
+      // For all other content types, render the default response body
+      return <Original {...props} />;
+    },
+  },
+});
+
+
+const balanceTrackingNetworkPlugin = () => ({
+  wrapComponents: {
+    responseBody: (Original) => (props) => {
+      const { content: body, url } = props;
+
+      const match = url.match(/\/v1\/balance-tracking\/([^/]+)$/);
+
+      if (match) {
+        let res;
+
+        try {
+          res = typeof body === "string" ? JSON.parse(body) : body;
+
+          // Validate the response structure
+          if (!res || !res.response || !res.response.result || !res.response.result.data) {
+            throw new Error("Invalid or empty response data.");
+          }
+        } catch (error) {
+          console.error("Error processing balance tracking balances data:", error.message);
+          return <p style={{ color: "red" }}>Error rendering balances data: {error.message}</p>;
+        }
+
+        return (
+          <div>
+            <TimeSeries data={res} dataKey="balance" />
+          </div>
+        );
+      }
+
+      // For all other content types, render the default response body
+      return <Original {...props} />;
+    },
+  },
+});
+
+const balanceTrackingTimestampsPlugin = () => ({
+  wrapComponents: {
+    responseBody: (Original) => (props) => {
+      const { content: body, url } = props;
+
+      const match = url.match(/\/v1\/balance-tracking\/([^/]+)\/timestamps/);
+
+      if (match) {
+        let res;
+
+        try {
+          res = typeof body === "string" ? JSON.parse(body) : body;
+
+          if (!res || !res.response || !res.response.result || !res.response.result.data) {
+            throw new Error("Invalid or empty response data.");
+          }
+        } catch (error) {
+          console.error("Error processing balance tracking timestamps data:", error.message);
+          return <p style={{ color: "red" }}>Error rendering timestamps data: {error.message}</p>;
+        }
+
+        return (
+          <div>
+            <TimeSeries data={res} dataKey="timestamps" />
+          </div>
+        );
+      }
+
+      // For all other content types, render the default response body
+      return <Original {...props} />;
+    },
+  },
+});
+
+
 
 function App() {
   const [swaggerData, setSwaggerData] = useState(null);
@@ -140,7 +248,7 @@ function App() {
           ) : swaggerData ? (
             <SwaggerUI
               spec={swaggerData}
-              plugins={[graphPlugin]}
+              plugins={[graphPlugin, balanceTrackingDeltasPlugin, balanceTrackingNetworkPlugin, balanceTrackingTimestampsPlugin]}
               docExpansion="list"
               tryItOutEnabled={true}
               requestInterceptor={(req) => {
